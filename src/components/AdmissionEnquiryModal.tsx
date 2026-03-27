@@ -180,6 +180,8 @@ export default function AdmissionEnquiryModal({ isOpen, onClose }: AdmissionEnqu
                         <option value="PCM" className="bg-[#111111]">PCM</option>
                         <option value="PCB" className="bg-[#111111]">PCB</option>
                         <option value="PCMB" className="bg-[#111111]">PCMB</option>
+                        <option value="ARTS" className="bg-[#111111]">ARTS</option>
+                        <option value="COMMERCE" className="bg-[#111111]">COMMERCE</option>
                       </select>
                     </div>
                   </div>
