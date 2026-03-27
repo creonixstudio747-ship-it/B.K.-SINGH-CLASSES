@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Layers, ChevronRight, Activity, BookCheck } from "lucide-react";
 
@@ -11,8 +11,43 @@ const classesData = [
   { id: "12th", title: "Class 12th", board: "Board + JEE/NEET", completion: 65, color: "var(--color-subtle-grey)" },
 ];
 
+const mockTestData = {
+  "9th": [
+    { chapter: "Chapter 1", subject: "Mathematics", title: "Number Systems", score: 85 },
+    { chapter: "Chapter 2", subject: "Science", title: "Matter & Surroundings", score: 92 },
+    { chapter: "Chapter 3", subject: "Mathematics", title: "Polynomial Basics", score: 78 }
+  ],
+  "10th": [
+    { chapter: "Chapter 1", subject: "Mathematics", title: "Trigonometry Subtest 1", score: 85 },
+    { chapter: "Chapter 2", subject: "Science", title: "Light & Reflection", score: 92 },
+    { chapter: "Chapter 3", subject: "Mathematics", title: "Quadratic Equations", score: 78 }
+  ],
+  "11th": [
+    { chapter: "Chapter 1", subject: "Physics", title: "Kinematics & Vectors", score: 85 },
+    { chapter: "Chapter 2", subject: "Chemistry", title: "Atomic Structure", score: 92 },
+    { chapter: "Chapter 3", subject: "Mathematics", title: "Calculus Limits", score: 78 }
+  ],
+  "12th": [
+    { chapter: "Chapter 1", subject: "Physics", title: "Electrostatics Focus", score: 85 },
+    { chapter: "Chapter 2", subject: "Chemistry", title: "Organic Reactions", score: 92 },
+    { chapter: "Chapter 3", subject: "Mathematics", title: "Advanced Integration", score: 78 }
+  ]
+};
+
 export default function DashboardHub() {
   const [activeTab, setActiveTab] = useState("10th");
+
+  useEffect(() => {
+    const handleSync = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      const tierMatch = customEvent.detail.match(/(\d+th)/);
+      if (tierMatch) {
+        setActiveTab(tierMatch[1]);
+      }
+    };
+    window.addEventListener('syncDashboardClass', handleSync);
+    return () => window.removeEventListener('syncDashboardClass', handleSync);
+  }, []);
 
   return (
     <section className="relative z-10 w-full max-w-7xl mx-auto py-16">
@@ -44,8 +79,8 @@ export default function DashboardHub() {
                   }`}
                   style={{
                     backgroundColor: isActive ? "var(--color-glass-lighter)" : "rgba(255, 255, 255, 0.02)",
-                    borderColor: isActive ? cls.color : "var(--color-glass-border)",
-                    boxShadow: isActive ? `0 0 20px -5px ${cls.color}` : "none",
+                    borderColor: isActive ? "var(--color-bk-lime)" : "var(--color-glass-border)",
+                    boxShadow: isActive ? `0 0 20px -5px var(--color-bk-lime)` : "none",
                   }}
                 >
                   {/* Subtle active state gradient background */}
@@ -53,7 +88,7 @@ export default function DashboardHub() {
                     <motion.div
                       layoutId="activeTabBg"
                       className="absolute inset-0 opacity-10"
-                      style={{ background: `linear-gradient(90deg, ${cls.color}, transparent)` }}
+                      style={{ background: `linear-gradient(90deg, var(--color-bk-lime), transparent)` }}
                       initial={false}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
@@ -91,7 +126,7 @@ export default function DashboardHub() {
                     </div>
                   </div>
                   
-                  <ChevronRight size={18} className={`relative z-10 transition-transform duration-300 ${isActive ? "text-white translate-x-1" : "text-[var(--color-subtle-grey)] group-hover:text-white"}`} />
+                  <ChevronRight size={18} className={`relative z-10 transition-transform duration-300 ${isActive ? "text-[var(--color-bk-lime)] translate-x-1" : "text-[var(--color-subtle-grey)] group-hover:text-white"}`} />
                 </button>
               );
             })}
@@ -122,7 +157,7 @@ export default function DashboardHub() {
               transition={{ duration: 0.3 }}
               className="flex-grow flex flex-col gap-4"
             >
-              {[1, 2, 3].map((_, idx) => (
+              {(mockTestData[activeTab as keyof typeof mockTestData] || []).map((test, idx) => (
                 <div key={idx} className="group relative w-full bg-black/20 hover:bg-black/40 border border-[var(--color-glass-border)] rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-[var(--color-glass-lighter)] rounded-lg flex items-center justify-center border border-[var(--color-glass-border-highlight)] group-hover:bg-[var(--color-bk-lime)]/10 group-hover:border-[var(--color-bk-lime)]/30 transition-colors">
@@ -130,11 +165,11 @@ export default function DashboardHub() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] uppercase font-bold text-[var(--color-viz-purple)] tracking-wider">Chapter {idx + 1}</span>
+                        <span className="text-[10px] uppercase font-bold text-[var(--color-viz-purple)] tracking-wider">{test.chapter}</span>
                         <span className="w-1 h-1 bg-[var(--color-subtle-grey)] rounded-full"></span>
-                        <span className="text-[10px] uppercase font-bold text-[var(--color-subtle-grey)] tracking-wider">Mathematics</span>
+                        <span className="text-[10px] uppercase font-bold text-[var(--color-subtle-grey)] tracking-wider">{test.subject}</span>
                       </div>
-                      <h4 className="text-white font-semibold text-lg group-hover:text-[var(--color-bk-lime)] transition-colors">Trigonometry Subtest {idx + 1}</h4>
+                      <h4 className="text-white font-semibold text-lg group-hover:text-[var(--color-bk-lime)] transition-colors">{test.title}</h4>
                     </div>
                   </div>
                   
@@ -142,8 +177,8 @@ export default function DashboardHub() {
                     <div className="text-right">
                       <div className="text-xs text-[var(--color-subtle-grey)]">Score</div>
                       <div className="text-lg font-bold text-white group-hover:text-[var(--color-viz-cyan)] transition-colors">
-                        {Math.floor(Math.random() * 40 + 60)}<span className="text-[10px] text-[var(--color-subtle-grey)] font-normal">/100</span>
-                      </div>
+                      {test.score}<span className="text-[10px] text-[var(--color-subtle-grey)] font-normal">/100</span>
+                    </div>
                     </div>
                     <button className="h-10 px-6 bg-[var(--color-glass)] border border-[var(--color-glass-border-highlight)] text-sm font-medium text-white rounded-lg hover:bg-white hover:text-black hover:border-white transition-all duration-300">
                       View details
