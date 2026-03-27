@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Library, Globe, Timer, Trophy } from "lucide-react";
 import Link from "next/link";
+import VideoGalleryModal from "./VideoGalleryModal";
 
 const categories = [
   {
@@ -43,9 +44,10 @@ const categories = [
 
 export default function NavigationCategoryHub() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isEnglishModalOpen, setIsEnglishModalOpen] = useState(false);
 
   return (
-    <section className="relative z-10 w-full max-w-7xl mx-auto py-12 px-4 md:px-0">
+    <section className="relative z-50 w-full max-w-7xl mx-auto py-12 px-4 md:px-0">
       <div className="relative">
         {/* Ambient Blur Intensity behind the specific card */}
         <AnimatePresence>
@@ -78,65 +80,82 @@ export default function NavigationCategoryHub() {
           {categories.map((cat, idx) => {
             const isHovered = hoveredIndex === idx;
 
-            return (
-              <Link href={cat.href} key={idx} className="block w-full">
-                <motion.div
-                  onHoverStart={() => setHoveredIndex(idx)}
-                  onHoverEnd={() => setHoveredIndex(null)}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="relative group flex flex-col items-center justify-center p-6 h-full min-h-[160px] md:min-h-[200px] border border-white/5 bg-white/5 rounded-2xl overflow-hidden cursor-pointer"
-                  style={{
-                    boxShadow: isHovered 
-                      ? `0 0 20px -5px ${cat.colorHex}60, inset 0 0 10px -5px ${cat.colorHex}40` 
-                      : "none",
-                    borderColor: isHovered ? `${cat.colorHex}50` : "rgba(255,255,255,0.05)",
-                  }}
-                >
-                  {/* Badges */}
-                  {cat.badge && (
-                    <div className="absolute top-3 right-3 flex items-center gap-2">
-                      {cat.pulseBadge && (
-                        <div className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-bk-lime)] opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-bk-lime)]"></span>
-                        </div>
-                      )}
-                      <span 
-                        className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border"
-                        style={{
-                          backgroundColor: `${cat.colorHex}20`,
-                          color: cat.colorHex,
-                          borderColor: `${cat.colorHex}40`,
-                        }}
-                      >
-                        {cat.badge}
-                      </span>
-                    </div>
-                  )}
-
-                  <div 
-                    className="mb-4 transition-transform duration-300 transform group-hover:-translate-y-1"
-                    style={{ color: isHovered ? cat.colorHex : "#fff" }}
-                  >
-                    {cat.icon}
+            const CardContent = (
+              <motion.div
+                onHoverStart={() => setHoveredIndex(idx)}
+                onHoverEnd={() => setHoveredIndex(null)}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="relative group flex flex-col items-center justify-center p-6 h-full min-h-[160px] md:min-h-[200px] border border-white/5 bg-white/5 rounded-2xl overflow-hidden cursor-pointer"
+                style={{
+                  boxShadow: isHovered 
+                    ? `0 0 20px -5px ${cat.colorHex}60, inset 0 0 10px -5px ${cat.colorHex}40` 
+                    : "none",
+                  borderColor: isHovered ? `${cat.colorHex}50` : "rgba(255,255,255,0.05)",
+                }}
+              >
+                {/* Badges */}
+                {cat.badge && (
+                  <div className="absolute top-3 right-3 flex items-center gap-2">
+                    {cat.pulseBadge && (
+                      <div className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-bk-lime)] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-bk-lime)]"></span>
+                      </div>
+                    )}
+                    <span 
+                      className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border"
+                      style={{
+                        backgroundColor: `${cat.colorHex}20`,
+                        color: cat.colorHex,
+                        borderColor: `${cat.colorHex}40`,
+                      }}
+                    >
+                      {cat.badge}
+                    </span>
                   </div>
-                  
-                  <h3 className="text-sm md:text-base font-bold text-white text-center tracking-wider mb-1">
-                    {cat.title}
-                  </h3>
-                  
-                  {cat.subtitle && (
-                    <p className="text-xs text-[var(--color-subtle-grey)] text-center">
-                      {cat.subtitle}
-                    </p>
-                  )}
-                </motion.div>
-              </Link>
+                )}
+
+                <div 
+                  className="mb-4 transition-transform duration-300 transform group-hover:-translate-y-1"
+                  style={{ color: isHovered ? cat.colorHex : "#fff" }}
+                >
+                  {cat.icon}
+                </div>
+                
+                <h3 className="text-sm md:text-base font-bold text-white text-center tracking-wider mb-1">
+                  {cat.title}
+                </h3>
+                
+                {cat.subtitle && (
+                  <p className="text-xs text-[var(--color-subtle-grey)] text-center">
+                    {cat.subtitle}
+                  </p>
+                )}
+              </motion.div>
+            );
+
+            return (
+              <React.Fragment key={idx}>
+                {cat.title === "ENGLISH COURSE" ? (
+                  <div className="block w-full" onClick={() => setIsEnglishModalOpen(true)}>
+                    {CardContent}
+                  </div>
+                ) : (
+                  <Link href={cat.href} className="block w-full">
+                    {CardContent}
+                  </Link>
+                )}
+              </React.Fragment>
             );
           })}
         </div>
       </div>
+      
+      <VideoGalleryModal 
+        isOpen={isEnglishModalOpen} 
+        onClose={() => setIsEnglishModalOpen(false)} 
+      />
     </section>
   );
 }
