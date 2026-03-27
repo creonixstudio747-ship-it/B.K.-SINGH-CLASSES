@@ -82,6 +82,33 @@ export default function ExpertiseSection() {
     };
   }, [selectedExp, isMobile]);
 
+  // Handle UX Standard Navigation (Browser Back Button Support)
+  useEffect(() => {
+    const handlePopState = () => {
+      // Whenever history pops backwards, safely close the detailed panel natively
+      setSelectedExp(null);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const openPanel = (exp: typeof expertiseData[0]) => {
+    if (!selectedExp) {
+      window.history.pushState({ detailsOpen: true }, "");
+    }
+    setSelectedExp(exp);
+    window.dispatchEvent(new CustomEvent('syncDashboardClass', { detail: exp.tier }));
+  };
+
+  const closePanel = () => {
+    // Standard condition UI close mapping to browser generic back
+    if (window.history.state?.detailsOpen) {
+      window.history.back(); // Triggers popstate, safely closing the ui
+    } else {
+      setSelectedExp(null);
+    }
+  };
+
   return (
     <section className="relative z-10 w-full max-w-7xl mx-auto py-16">
       <div className="text-center mb-16 space-y-4 px-4 hover:cursor-default">
@@ -99,10 +126,7 @@ export default function ExpertiseSection() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-            onClick={() => {
-              setSelectedExp(exp);
-              window.dispatchEvent(new CustomEvent('syncDashboardClass', { detail: exp.tier }));
-            }}
+            onClick={() => openPanel(exp)}
             className="group glass-card rounded-2xl p-8 hover:bg-[var(--color-glass-lighter)] hover:border-[var(--color-glass-border-highlight)] hover:-translate-y-2 transition-all duration-500 cursor-pointer flex flex-col h-full"
           >
             <div className="mb-6 inline-flex items-center justify-center p-4 rounded-xl bg-[var(--color-glass-lighter)] border border-[var(--color-glass-border)] shadow-[inset_0_0_20px_rgba(255,255,255,0.02)] group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.1)] transition-all duration-500">
@@ -152,7 +176,7 @@ export default function ExpertiseSection() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setSelectedExp(null)}
+                onClick={closePanel}
                 className="fixed inset-0 z-40 bg-black/80 backdrop-blur-md cursor-pointer"
                 aria-hidden="true"
               />
@@ -175,7 +199,7 @@ export default function ExpertiseSection() {
 
                 {/* Close button */}
                 <button
-                  onClick={() => setSelectedExp(null)}
+                  onClick={closePanel}
                   className="absolute top-6 right-6 p-2 text-[var(--color-subtle-grey)] hover:text-white hover:bg-white/10 rounded-full transition-colors z-10"
                   aria-label="Close details"
                 >
