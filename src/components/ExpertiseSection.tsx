@@ -122,90 +122,76 @@ export default function ExpertiseSection() {
         ))}
       </div>
 
-      {/* Modal Integration (Fixed Viewport Modal) */}
+      {/* Persistent Inline Details Panel */}
       <AnimatePresence>
         {selectedExp && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-            {/* Backdrop: Semi-transparent to let background be visible */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedExp(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
-              aria-hidden="true"
-            />
-            
-            {/* Modal Dialog */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 30 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-md bg-[#0a0a0a]/95 backdrop-blur-xl border border-[var(--color-bk-lime)] shadow-[0_0_40px_rgba(163,255,0,0.25)] rounded-2xl overflow-hidden pointer-events-auto"
-              role="dialog"
-              aria-modal="true"
-            >
-              <div className="p-6 sm:p-8">
-                {/* Close button */}
-                <button
-                  onClick={() => setSelectedExp(null)}
-                  className="absolute top-4 right-4 p-2 text-[var(--color-subtle-grey)] hover:text-white hover:bg-white/10 rounded-full transition-colors"
-                  aria-label="Close modal"
-                >
-                  <X size={20} />
-                </button>
+          <motion.div
+            initial={{ opacity: 0, height: 0, y: -20 }}
+            animate={{ opacity: 1, height: "auto", y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -20 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="w-full max-w-5xl mx-auto mt-12 bg-[#0a0a0a]/60 backdrop-blur-xl border border-[var(--color-bk-lime)] shadow-[0_0_40px_rgba(163,255,0,0.1)] rounded-3xl overflow-hidden"
+          >
+            <div className="p-8 lg:p-10 flex flex-col md:flex-row gap-8 lg:gap-12 relative overflow-hidden">
+              {/* Decorative ambient glow */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-bk-lime)]/5 blur-[100px] rounded-full pointer-events-none" />
 
-                {/* Header */}
-                <div className="mb-8 pr-8">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="p-3 rounded-xl bg-[var(--color-glass-lighter)] border border-[var(--color-glass-border)]">
-                      {selectedExp.icon}
-                    </div>
-                    <div>
-                      <h4 className="text-[var(--color-bk-lime)] text-xs font-bold uppercase tracking-widest mb-1">
-                        {selectedExp.tier}
-                      </h4>
-                      <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                        {selectedExp.title}
-                      </h3>
-                    </div>
+              {/* Close button */}
+              <button
+                onClick={() => setSelectedExp(null)}
+                className="absolute top-6 right-6 p-2 text-[var(--color-subtle-grey)] hover:text-white hover:bg-white/10 rounded-full transition-colors z-10"
+                aria-label="Close details"
+              >
+                <X size={20} />
+              </button>
+
+              {/* Header Info */}
+              <div className="md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 pb-8 md:pb-0 md:pr-8 relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-4 rounded-2xl bg-[var(--color-glass-lighter)] border border-[var(--color-glass-border)] shadow-inner">
+                    {selectedExp.icon}
                   </div>
-                  <p className="text-[var(--color-subtle-grey)] text-sm leading-relaxed">
-                    {selectedExp.description}
-                  </p>
+                  <div>
+                    <h4 className="text-[var(--color-bk-lime)] text-xs font-bold uppercase tracking-widest mb-1">
+                      {selectedExp.tier}
+                    </h4>
+                    <h3 className="text-2xl lg:text-3xl font-black text-white leading-tight">
+                      {selectedExp.title}
+                    </h3>
+                  </div>
                 </div>
-
-                {/* Points List */}
-                <div className="space-y-4">
-                  {selectedExp.modalPoints.map((point, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + idx * 0.1 }}
-                      className="flex items-start gap-3 bg-white/5 p-4 rounded-xl border border-white/5 hover:bg-white/10 transition-colors"
-                    >
-                      <CheckCircle2 className="w-5 h-5 text-[var(--color-bk-lime)] shrink-0 mt-0.5" />
-                      <span className="text-sm font-medium text-gray-200 leading-snug">
-                        {point}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Footer */}
-                <div className="mt-8 pt-6 border-t border-white/10 flex justify-end">
-                  <button
-                    onClick={() => setSelectedExp(null)}
-                    className="px-6 py-2.5 rounded-full bg-[var(--color-bk-lime)] text-black font-bold text-sm tracking-wide hover:shadow-[0_0_20px_rgba(163,255,0,0.4)] transition-shadow"
-                  >
-                    Got It
-                  </button>
+                <p className="text-[var(--color-subtle-grey)] text-base leading-relaxed">
+                  {selectedExp.description}
+                </p>
+                
+                <div className="mt-8">
+                  <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-bk-lime)]/10 text-[var(--color-bk-lime)] text-xs font-bold tracking-wide border border-[var(--color-bk-lime)]/20">
+                    {selectedExp.enrolled}% Capacity Reached
+                  </span>
                 </div>
               </div>
-            </motion.div>
-          </div>
+
+              {/* Points List */}
+              <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10 pt-2 md:pt-0">
+                {selectedExp.modalPoints.map((point, idx) => (
+                  <motion.div
+                    key={`${selectedExp.tier}-${idx}`}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + idx * 0.1 }}
+                    className="flex items-start gap-3 bg-white/5 p-5 rounded-2xl border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all duration-300"
+                  >
+                    <div className="shrink-0 mt-0.5 w-6 h-6 rounded-full bg-[var(--color-bk-lime)]/10 flex items-center justify-center border border-[var(--color-bk-lime)]/20">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[var(--color-bk-lime)]" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-200 leading-relaxed">
+                      {point}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </section>
