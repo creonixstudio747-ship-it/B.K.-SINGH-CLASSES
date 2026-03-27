@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Compass } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
 export default function HeroSection() {
   return (
@@ -47,10 +47,10 @@ export default function HeroSection() {
             <div className="absolute inset-x-0 bottom-0 h-1 bg-black/20"></div>
           </button>
 
-          {/* Exact replication of "Explore Programs" line border button */}
+          {/* Exact replication of "Admission Enquiry" line border button */}
           <button className="group relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-[var(--color-glass-border-highlight)] text-white font-medium uppercase tracking-wider rounded-none hover:border-white hover:bg-[var(--color-glass)] transition-all duration-300">
-            <Compass size={20} className="text-[var(--color-subtle-grey)] group-hover:text-white transition-colors" />
-            <span>Explore Programs</span>
+            <MessageCircle size={20} className="text-[var(--color-subtle-grey)] group-hover:text-white transition-colors" />
+            <span>Admission Enquiry</span>
           </button>
         </motion.div>
       </div>
