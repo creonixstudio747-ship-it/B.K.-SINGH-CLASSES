@@ -1,10 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
+import AdmissionEnquiryModal from "./AdmissionEnquiryModal";
 
 export default function HeroSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center overflow-hidden pt-24 pb-16">
       {/* Subtle wireframe mesh background effect */}
@@ -48,7 +51,10 @@ export default function HeroSection() {
           </button>
 
           {/* Exact replication of "Admission Enquiry" line border button */}
-          <button className="group relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-[var(--color-glass-border-highlight)] text-white font-medium uppercase tracking-wider rounded-none hover:border-white hover:bg-[var(--color-glass)] transition-all duration-300">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="group relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-[var(--color-glass-border-highlight)] text-white font-medium uppercase tracking-wider rounded-none hover:border-white hover:bg-[var(--color-glass)] transition-all duration-300"
+          >
             <MessageCircle size={20} className="text-[var(--color-subtle-grey)] group-hover:text-white transition-colors" />
             <span>Admission Enquiry</span>
           </button>
@@ -57,6 +63,8 @@ export default function HeroSection() {
 
       {/* Decorative neon glow below hero */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 max-w-2xl h-[1px] bg-gradient-to-r from-transparent via-[var(--color-bk-lime)] to-transparent opacity-30 shadow-[0_-10px_30px_rgba(163,255,0,0.4)]"></div>
+      
+      <AdmissionEnquiryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }
