@@ -1,5 +1,5 @@
 import HeroSection from "@/components/HeroSection";
-import StatsSection from "@/components/StatsSection";
+import NavigationCategoryHub from "@/components/NavigationCategoryHub";
 import ExpertiseSection from "@/components/ExpertiseSection";
 import DashboardHub from "@/components/DashboardHub";
 import MethodologyLibrary from "@/components/MethodologyLibrary";
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-16 pb-20">
       <HeroSection />
-      <StatsSection />
+      <NavigationCategoryHub />
       <ExpertiseSection />
       <DashboardHub />
       <MethodologyLibrary />
