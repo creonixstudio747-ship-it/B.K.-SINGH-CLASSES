@@ -97,7 +97,8 @@ export default function ExpertiseSection() {
       window.history.pushState({ detailsOpen: true }, "");
     }
     setSelectedExp(exp);
-    window.dispatchEvent(new CustomEvent('syncDashboardClass', { detail: exp.tier }));
+    // Task 1: Decoupling Expertise State from Hub State
+    // REMOVED CustomEvent dispatch syncDashboardClass to guarantee independence
   };
 
   const closePanel = () => {
@@ -166,7 +167,7 @@ export default function ExpertiseSection() {
         ))}
       </div>
 
-      {/* Persistent Inline Details Panel (Desktop) / Fixed Modal (Mobile) */}
+      {/* Persistent Inline Details Panel (Desktop) / Fixed Centered Modal (Mobile) */}
       <AnimatePresence>
         {selectedExp && (
           <>
@@ -183,31 +184,33 @@ export default function ExpertiseSection() {
             )}
 
             <motion.div
-              initial={isMobile ? { opacity: 0, scale: 0.95 } : { opacity: 0, height: 0, y: -20 }}
-              animate={isMobile ? { opacity: 1, scale: 1 } : { opacity: 1, height: "auto", y: 0 }}
-              exit={isMobile ? { opacity: 0, scale: 0.95 } : { opacity: 0, height: 0, y: -20 }}
+              initial={isMobile ? { opacity: 0, scale: 0.95, x: "-50%", y: "-50%" } : { opacity: 0, height: 0, y: -20 }}
+              animate={isMobile ? { opacity: 1, scale: 1, x: "-50%", y: "-50%" } : { opacity: 1, height: "auto", y: 0 }}
+              exit={isMobile ? { opacity: 0, scale: 0.95, x: "-50%", y: "-50%" } : { opacity: 0, height: 0, y: -20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className={`border border-[var(--color-bk-lime)] overflow-hidden flex flex-col ${
                 isMobile 
-                  ? "fixed inset-4 sm:inset-6 z-50 bg-[#0a0a0a]/95 backdrop-blur-3xl shadow-[0_0_50px_rgba(163,255,0,0.15)] rounded-2xl overflow-y-auto" 
+                  ? "fixed top-1/2 left-1/2 w-[90%] max-h-[85vh] z-50 bg-[#0a0a0a]/95 backdrop-blur-3xl shadow-[0_0_50px_rgba(163,255,0,0.15)] rounded-2xl" 
                   : "w-full max-w-5xl mx-auto mt-12 bg-[#0a0a0a]/60 backdrop-blur-xl shadow-[0_0_40px_rgba(163,255,0,0.1)] rounded-3xl relative"
               }`}
             >
-              <div className={`flex flex-col md:flex-row gap-8 lg:gap-12 relative overflow-hidden ${isMobile ? "p-6 sm:p-8" : "p-8 lg:p-10"}`}>
+              {/* Close Button - Always visibly fixed to top right container corner */}
+              <button
+                onClick={closePanel}
+                className={`absolute ${
+                  isMobile ? "top-4 right-4 bg-[#0a0a0a]/80 shadow-md backdrop-blur-md" : "top-6 right-6 hover:bg-white/10"
+                } p-2 text-[var(--color-subtle-grey)] hover:text-white rounded-full transition-colors z-[60]`}
+                aria-label="Close details"
+              >
+                <X size={20} />
+              </button>
+
+              <div className={`flex flex-col md:flex-row gap-8 lg:gap-12 relative w-full h-full overflow-y-auto ${isMobile ? "p-6 sm:p-8 pt-16" : "p-8 lg:p-10"}`}>
                 {/* Decorative ambient glow */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-bk-lime)]/5 blur-[100px] rounded-full pointer-events-none" />
 
-                {/* Close button */}
-                <button
-                  onClick={closePanel}
-                  className="absolute top-6 right-6 p-2 text-[var(--color-subtle-grey)] hover:text-white hover:bg-white/10 rounded-full transition-colors z-10"
-                  aria-label="Close details"
-                >
-                  <X size={20} />
-                </button>
-
                 {/* Header Info */}
-                <div className="md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 pb-8 md:pb-0 md:pr-8 relative z-10">
+                <div className="md:w-1/3 border-b md:border-b-0 md:border-r border-white/10 pb-8 md:pb-0 md:pr-8 relative z-10 shrink-0">
                   <div className={`flex items-center gap-4 ${isMobile ? "mb-4" : "mb-6"}`}>
                     <div className="p-4 rounded-2xl bg-[var(--color-glass-lighter)] border border-[var(--color-glass-border)] shadow-inner">
                       {selectedExp.icon}
