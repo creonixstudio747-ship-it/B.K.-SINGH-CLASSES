@@ -36,7 +36,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    let unsubscribe: () => void;
+    let unsubscribe: () => void = () => {};
+
+    if (!auth) {
+      console.error("Firebase auth is null. Check NEXT_PUBLIC_FIREBASE_API_KEY.");
+      setLoading(false);
+      return;
+    }
 
     try {
       unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
