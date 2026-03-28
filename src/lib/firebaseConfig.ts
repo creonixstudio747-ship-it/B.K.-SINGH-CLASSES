@@ -11,6 +11,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+
 const app = !getApps().length ? initializeApp({
   ...firebaseConfig,
   // Provide dummy strings during Vercel SSR build to prevent "auth/invalid-api-key" crashes.
