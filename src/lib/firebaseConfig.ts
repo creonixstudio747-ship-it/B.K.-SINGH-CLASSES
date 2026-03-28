@@ -11,28 +11,15 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-let app: any;
+const app = !getApps().length ? initializeApp({
+  ...firebaseConfig,
+  // Provide dummy strings during Vercel SSR build to prevent "auth/invalid-api-key" crashes.
+  // The client will use the real keys securely populated by Webpack.
+  apiKey: firebaseConfig.apiKey || "dummy-api-key-for-ssr-build",
+  projectId: firebaseConfig.projectId || "dummy-project-for-ssr-build"
+}) : getApp();
 
-try {
-  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-} catch (err) {
-  console.error("Firebase app init error:", err);
-}
-
-let auth: any = null;
-let db: any = null;
-
-if (app) {
-  try {
-    auth = getAuth(app);
-  } catch (err) {
-    console.warn("Firebase Auth bypassed during SSR or due to missing config:", err);
-  }
-  try {
-    db = getFirestore(app);
-  } catch (err) {
-    console.warn("Firebase DB bypassed during SSR or due to missing config:", err);
-  }
-}
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 export { app, auth, db };
