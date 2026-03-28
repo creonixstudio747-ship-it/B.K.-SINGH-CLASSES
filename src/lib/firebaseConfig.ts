@@ -11,10 +11,28 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Singleton pattern carefully checking for API Key to avoid Vercel build crashes
-const app = !getApps().length && firebaseConfig.apiKey ? initializeApp(firebaseConfig) : getApps().length > 0 ? getApp() : null;
+let app: any;
 
-const auth = app ? getAuth(app) : null as any;
-const db = app ? getFirestore(app) : null as any;
+try {
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+} catch (err) {
+  console.error("Firebase app init error:", err);
+}
+
+let auth: any = null;
+let db: any = null;
+
+if (app) {
+  try {
+    auth = getAuth(app);
+  } catch (err) {
+    console.warn("Firebase Auth bypassed during SSR or due to missing config:", err);
+  }
+  try {
+    db = getFirestore(app);
+  } catch (err) {
+    console.warn("Firebase DB bypassed during SSR or due to missing config:", err);
+  }
+}
 
 export { app, auth, db };
