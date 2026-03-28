@@ -1,7 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import NavigationCategoryHub from "@/components/NavigationCategoryHub";
 import ExpertiseSection from "@/components/ExpertiseSection";
-import DashboardHub from "@/components/DashboardHub";
+import LearningHub from "@/components/LearningHub";
 import MethodologyLibrary from "@/components/MethodologyLibrary";
 import LocationMentor from "@/components/LocationMentor";
 import Footer from "@/components/Footer";
@@ -12,7 +12,7 @@ export default function Home() {
       <HeroSection />
       <NavigationCategoryHub />
       <ExpertiseSection />
-      <DashboardHub />
+      <LearningHub />
       <MethodologyLibrary />
       <LocationMentor />
       <Footer />

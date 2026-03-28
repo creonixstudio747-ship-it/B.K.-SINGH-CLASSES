@@ -50,13 +50,13 @@ export default function HeroSection() {
             <div className="absolute inset-x-0 bottom-0 h-1 bg-black/20"></div>
           </button>
 
-          {/* Exact replication of "Admission Enquiry" line border button */}
+          {/* Neon-Glass "Admission Enquiry" button */}
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="group relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-[var(--color-glass-border-highlight)] text-white font-medium uppercase tracking-wider rounded-none hover:border-white hover:bg-[var(--color-glass)] transition-all duration-300"
+            className="group relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-white/5 bg-gradient-to-br from-white/10 to-transparent backdrop-blur-[12px] backdrop-saturate-[180%] border-2 border-[#D4FF00] shadow-[0_0_5px_#D4FF00,0_0_15px_rgba(212,255,0,0.4),inset_0_0_5px_rgba(255,255,255,0.2)] rounded-[8px] text-white font-bold uppercase tracking-[1px] transition-all duration-300 ease-in-out hover:backdrop-blur-[20px] hover:shadow-[0_0_8px_#D4FF00,0_0_25px_rgba(212,255,0,0.6),inset_0_0_8px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-[0.98] active:shadow-[0_0_2px_#D4FF00,0_0_8px_rgba(212,255,0,0.3),inset_0_0_3px_rgba(255,255,255,0.1)]"
           >
-            <MessageCircle size={20} className="text-[var(--color-subtle-grey)] group-hover:text-white transition-colors" />
-            <span>Admission Enquiry</span>
+            <MessageCircle size={20} className="text-[#D4FF00] group-hover:text-white transition-colors" />
+            <span>ADMISSION ENQUIRY</span>
           </button>
         </motion.div>
       </div>
