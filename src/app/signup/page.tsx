@@ -38,8 +38,8 @@ export default function SignUp() {
       });
 
       router.push("/");
-    } catch (err: any) {
-      setError(err.message || "Failed to create an account.");
+    } catch (err: unknown) {
+      setError((err as Error).message || "Failed to create an account.");
     } finally {
       setLoading(false);
     }
@@ -65,8 +65,8 @@ export default function SignUp() {
       }
       
       router.push("/");
-    } catch (err: any) {
-      setError("Failed to sign up with Google. " + err.message);
+    } catch (err: unknown) {
+      setError("Failed to sign up with Google. " + (err as Error).message);
     } finally {
       setLoading(false);
     }

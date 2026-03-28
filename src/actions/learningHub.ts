@@ -38,7 +38,7 @@ export async function fetchLearningHubData(className: string, streamName: string
     
     const csvText = await res.text();
     
-    const parsed = Papa.parse<any>(csvText, {
+    const parsed = Papa.parse<Record<string, string>>(csvText, {
       header: true,
       skipEmptyLines: true,
     });

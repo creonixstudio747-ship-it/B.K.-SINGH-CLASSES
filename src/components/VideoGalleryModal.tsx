@@ -70,6 +70,7 @@ export default function VideoGalleryModal({ isOpen, onClose }: VideoGalleryModal
       });
       const top6 = combinedItems.slice(0, 6);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const fetchedVideos: VideoData[] = top6.map((item: any) => ({
         id: item.id.videoId,
         title: item.snippet.title,

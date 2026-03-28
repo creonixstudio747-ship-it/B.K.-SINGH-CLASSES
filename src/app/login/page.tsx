@@ -26,7 +26,7 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
       router.push("/");
-    } catch (err: any) {
+    } catch {
       setError("Invalid Email or Password. Please try again.");
     } finally {
       setLoading(false);
@@ -54,8 +54,8 @@ export default function Login() {
       }
       
       router.push("/");
-    } catch (err: any) {
-      setError("Failed to sign in with Google. " + err.message);
+    } catch (err: unknown) {
+      setError("Failed to sign in with Google. " + (err as Error).message);
     } finally {
       setLoading(false);
     }
