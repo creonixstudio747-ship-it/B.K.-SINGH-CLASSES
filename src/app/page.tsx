@@ -3,6 +3,7 @@ import NavigationCategoryHub from "@/components/NavigationCategoryHub";
 import ExpertiseSection from "@/components/ExpertiseSection";
 import LearningHub from "@/components/LearningHub";
 import OurMethodology from "@/components/OurMethodology";
+import YouTubeClasses from "@/components/YouTubeClasses";
 import BharatLibrary from "@/components/BharatLibrary";
 import Location from "@/components/Location";
 import Footer from "@/components/Footer";
@@ -16,6 +17,7 @@ export default function Home() {
       <ExpertiseSection />
       <LearningHub />
       <OurMethodology />
+      <YouTubeClasses />
       <BharatLibrary />
       <Location />
       <Footer />

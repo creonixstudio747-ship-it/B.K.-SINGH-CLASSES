@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Library, Globe, Timer, Trophy } from "lucide-react";
+import { Library, Globe, Timer, Trophy, BookOpen } from "lucide-react";
 import Link from "next/link";
 import VideoGalleryModal from "./VideoGalleryModal";
 
@@ -40,6 +40,14 @@ const categories = [
     colorHex: "#888888",
     href: "/leaderboard",
   },
+  {
+    title: "EXPLORE BOOKS",
+    subtitle: "Library & Notes",
+    icon: <BookOpen className="w-8 h-8" />,
+    color: "#F59E0B", 
+    colorHex: "#F59E0B",
+    href: "/books",
+  },
 ];
 
 export default function NavigationCategoryHub() {
@@ -60,7 +68,7 @@ export default function NavigationCategoryHub() {
               className="absolute inset-0 pointer-events-none rounded-[24px]"
               style={{
                 background: `radial-gradient(circle at ${
-                  (hoveredIndex % 4) * 25 + 12.5
+                  (hoveredIndex % 5) * 20 + 10
                 }% 50%, ${categories[hoveredIndex].colorHex}20 0%, transparent 50%)`,
                 filter: "blur(20px)",
               }}
@@ -70,7 +78,7 @@ export default function NavigationCategoryHub() {
 
         {/* Parent Container (The Unified Rectangle) */}
         <div 
-          className="relative grid grid-cols-2 md:grid-cols-4 gap-5 p-5 md:p-10 rounded-[24px]"
+          className="relative grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 p-5 md:p-10 rounded-[24px]"
           style={{
             background: "rgba(255, 255, 255, 0.03)",
             backdropFilter: "blur(40px) saturate(150%)",

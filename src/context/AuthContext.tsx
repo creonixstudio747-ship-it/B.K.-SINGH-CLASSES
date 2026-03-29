@@ -10,6 +10,10 @@ export interface UserData {
   email: string;
   class: string;
   uid: string;
+  mobile?: string;
+  stream?: string;
+  parentName?: string;
+  parentMobile?: string;
 }
 
 interface AuthContextType {
